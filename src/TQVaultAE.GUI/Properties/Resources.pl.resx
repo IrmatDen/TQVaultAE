@@ -976,4 +976,16 @@ The terms can also be combined @sword&amp;rare would only search for rare swords
   <data name="GlobalSize" xml:space="preserve">
     <value>Rozmiar</value>
   </data>
+  <data name="ResultsDexterity" xml:space="preserve">
+    <value>dex</value>
+  </data>
+  <data name="ResultsIntelligence" xml:space="preserve">
+    <value>int</value>
+  </data>
+  <data name="ResultsLevel" xml:space="preserve">
+    <value>lvl</value>
+  </data>
+  <data name="ResultsStrength" xml:space="preserve">
+    <value>str</value>
+  </data>
 </root>

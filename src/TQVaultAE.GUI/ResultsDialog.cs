@@ -62,6 +62,10 @@ namespace TQVaultAE.GUI
 			this.containerName.HeaderText = Resources.ResultsContainer;
 			this.containerType.HeaderText = Resources.ResultsContainerType;
 			this.quality.HeaderText = Resources.ResultsQuality;
+			this.requiredLevel.HeaderText = Resources.ResultsLevel;
+			this.requiredStrength.HeaderText = Resources.ResultsStrength;
+			this.requiredDexterity.HeaderText = Resources.ResultsDexterity;
+			this.requiredIntelligence.HeaderText = Resources.ResultsIntelligence;
 
 			this.DrawCustomBorder = true;
 

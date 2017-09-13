@@ -1902,6 +1902,24 @@ namespace TQVaultAE.GUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to dex.
+        /// </summary>
+        internal static string ResultsDexterity {
+            get {
+                return ResourceManager.GetString("ResultsDexterity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to int.
+        /// </summary>
+        internal static string ResultsIntelligence {
+            get {
+                return ResourceManager.GetString("ResultsIntelligence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item.
         /// </summary>
         internal static string ResultsItem {
@@ -1911,11 +1929,29 @@ namespace TQVaultAE.GUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to lvl.
+        /// </summary>
+        internal static string ResultsLevel {
+            get {
+                return ResourceManager.GetString("ResultsLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quality.
         /// </summary>
         internal static string ResultsQuality {
             get {
                 return ResourceManager.GetString("ResultsQuality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to str.
+        /// </summary>
+        internal static string ResultsStrength {
+            get {
+                return ResourceManager.GetString("ResultsStrength", resourceCulture);
             }
         }
         

@@ -7,8 +7,10 @@ namespace TQVaultAE.GUI
 {
 	using TQVaultData;
 	using System;
+	using System.Collections.Generic;
 	using System.ComponentModel;
 	using System.Drawing;
+	using System.Linq;
 
 	/// <summary>
 	/// Class for an individual result in the results list.
@@ -31,6 +33,10 @@ namespace TQVaultAE.GUI
 		public string ContainerName => containerName;
 		public string ContainerType => containerType;
 
+		public int RequiredLevel => requiredLevel;
+		public int RequiredStrength => requiredStrength;
+		public int RequiredDexterity => requiredDexterity;
+		public int RequiredIntelligence => requiredIntelligence;
 
 		private readonly string container;
 		private readonly string containerName;
@@ -42,6 +48,11 @@ namespace TQVaultAE.GUI
 		private readonly string itemStyle;
 		private readonly string containerType;
 		private readonly Color color;
+
+		private readonly int requiredLevel;
+		private readonly int requiredStrength;
+		private readonly int requiredDexterity;
+		private readonly int requiredIntelligence;
 
 		public Result(string container, string containerName, int sackNumber, SackType sackType, Item item)
 		{
@@ -56,6 +67,22 @@ namespace TQVaultAE.GUI
 			this.itemStyle = MainForm.GetItemStyleString(itemStyle);
 			this.containerType = ResultsDialog.GetContainerTypeString(sackType);
 			this.color = Item.GetColor(itemStyle);
+
+			var requirementVariables = item.GetRequirementVariables();
+			var requirementVariablesList = requirementVariables.Values;
+			this.requiredLevel = GetRequirement(requirementVariablesList, "levelRequirement");
+			this.requiredStrength = GetRequirement(requirementVariablesList, "strengthRequirement");
+			this.requiredDexterity = GetRequirement(requirementVariablesList, "dexterityRequirement");
+			this.requiredIntelligence = GetRequirement(requirementVariablesList, "intelligenceRequirement");
+		}
+
+		private int GetRequirement(IList<Variable> variables, string key)
+		{
+			return variables
+				.Where(v => string.Equals(v.Name, key, StringComparison.InvariantCultureIgnoreCase) && v.DataType == VariableDataType.Integer && v.NumberOfValues > 0)
+				.Select(v => v.GetInt32(0))
+				.DefaultIfEmpty(0)
+				.Max();
 		}
 	}
 }

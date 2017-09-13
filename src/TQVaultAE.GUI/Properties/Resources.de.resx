@@ -980,4 +980,16 @@ Die Filter können natürlich auch kombiniert werden, ein '@sword&amp;selten' li
   <data name="GlobalSize" xml:space="preserve">
     <value>Größe ändern</value>
   </data>
+  <data name="ResultsDexterity" xml:space="preserve">
+    <value>dex</value>
+  </data>
+  <data name="ResultsIntelligence" xml:space="preserve">
+    <value>int</value>
+  </data>
+  <data name="ResultsLevel" xml:space="preserve">
+    <value>lvl</value>
+  </data>
+  <data name="ResultsStrength" xml:space="preserve">
+    <value>str</value>
+  </data>
 </root>

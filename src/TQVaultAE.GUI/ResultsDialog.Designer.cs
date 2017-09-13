@@ -35,6 +35,13 @@ namespace TQVaultAE.GUI
 		/// </summary>
 		private System.Windows.Forms.DataGridViewTextBoxColumn containerType;
 
+
+		private System.Windows.Forms.DataGridViewTextBoxColumn requiredLevel;
+		private System.Windows.Forms.DataGridViewTextBoxColumn requiredStrength;
+		private System.Windows.Forms.DataGridViewTextBoxColumn requiredDexterity;
+		private System.Windows.Forms.DataGridViewTextBoxColumn requiredIntelligence;
+
+
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -67,11 +74,19 @@ namespace TQVaultAE.GUI
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.resultsDataGridView = new System.Windows.Forms.DataGridView();
 			this.item = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.quality = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.containerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.containerType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.requiredLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.requiredStrength = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.requiredDexterity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.requiredIntelligence = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.resultsDataGridView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -98,7 +113,11 @@ namespace TQVaultAE.GUI
 			this.item,
 			this.quality,
 			this.containerName,
-			this.containerType});
+			this.containerType,
+			this.requiredLevel,
+			this.requiredStrength,
+			this.requiredDexterity,
+			this.requiredIntelligence});
 			this.resultsDataGridView.GridColor = System.Drawing.Color.Khaki;
 			this.resultsDataGridView.Location = new System.Drawing.Point(8, 28);
 			this.resultsDataGridView.MultiSelect = false;
@@ -178,6 +197,66 @@ namespace TQVaultAE.GUI
 			this.containerType.Name = "containerType";
 			this.containerType.ReadOnly = true;
 			this.containerType.Width = 111;
+			// 
+			// RequiredLevel
+			// 
+			this.requiredLevel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.requiredLevel.DataPropertyName = "RequiredLevel";
+			dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(31)))), ((int)(((byte)(21)))));
+			dataGridViewCellStyle6.Font = new System.Drawing.Font("Albertus MT", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.Gold;
+			dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
+			this.requiredLevel.DefaultCellStyle = dataGridViewCellStyle6;
+			this.requiredLevel.HeaderText = "lvl";
+			this.requiredLevel.Name = "RequiredLevel";
+			this.requiredLevel.ReadOnly = true;
+			this.requiredLevel.Width = 41;
+			// 
+			// RequiredStrength
+			// 
+			this.requiredStrength.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.requiredStrength.DataPropertyName = "RequiredStrength";
+			dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(31)))), ((int)(((byte)(21)))));
+			dataGridViewCellStyle7.Font = new System.Drawing.Font("Albertus MT", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.Gold;
+			dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
+			this.requiredStrength.DefaultCellStyle = dataGridViewCellStyle7;
+			this.requiredStrength.HeaderText = "str";
+			this.requiredStrength.Name = "RequiredStrength";
+			this.requiredStrength.ReadOnly = true;
+			this.requiredStrength.Width = 41;
+			// 
+			// RequiredDexterity
+			// 
+			this.requiredDexterity.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.requiredDexterity.DataPropertyName = "RequiredDexterity";
+			dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(31)))), ((int)(((byte)(21)))));
+			dataGridViewCellStyle8.Font = new System.Drawing.Font("Albertus MT", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.Gold;
+			dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
+			this.requiredDexterity.DefaultCellStyle = dataGridViewCellStyle8;
+			this.requiredDexterity.HeaderText = "dex";
+			this.requiredDexterity.Name = "RequiredDexterity";
+			this.requiredDexterity.ReadOnly = true;
+			this.requiredDexterity.Width = 41;
+			// 
+			// RequiredIntelligence
+			// 
+			this.requiredIntelligence.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+			this.requiredIntelligence.DataPropertyName = "RequiredIntelligence";
+			dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(31)))), ((int)(((byte)(21)))));
+			dataGridViewCellStyle9.Font = new System.Drawing.Font("Albertus MT", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
+			dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.Gold;
+			dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Black;
+			this.requiredIntelligence.DefaultCellStyle = dataGridViewCellStyle9;
+			this.requiredIntelligence.HeaderText = "int";
+			this.requiredIntelligence.Name = "RequiredIntelligence";
+			this.requiredIntelligence.ReadOnly = true;
+			this.requiredIntelligence.Width = 41;
 			// 
 			// ResultsDialog
 			// 

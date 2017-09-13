@@ -1139,4 +1139,16 @@ The terms can also be combined '@sword&amp;rare' would only search for rare swor
   <data name="SettingsPlayerReadonlyTT" xml:space="preserve">
     <value>Avoid save game corruption that occurs randomly. When enabled, player equipment will be read-only,  you won't be able to select or move any item.</value>
   </data>
+  <data name="ResultsDexterity" xml:space="preserve">
+    <value>dex</value>
+  </data>
+  <data name="ResultsIntelligence" xml:space="preserve">
+    <value>int</value>
+  </data>
+  <data name="ResultsLevel" xml:space="preserve">
+    <value>lvl</value>
+  </data>
+  <data name="ResultsStrength" xml:space="preserve">
+    <value>str</value>
+  </data>
 </root>
