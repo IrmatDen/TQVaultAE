@@ -13,6 +13,7 @@ namespace TQVaultAE.GUI
 	using System.Windows.Forms;
 	using Tooltip;
 	using TQVaultData;
+	using Equin.ApplicationFramework;
 
 	/// <summary>
 	/// Results dialog form class
@@ -23,6 +24,8 @@ namespace TQVaultAE.GUI
 		/// List of all results
 		/// </summary>
 		private List<Result> resultsList;
+
+		private BindingListView<Result> resultsBindingListView;
 
 		/// <summary>
 		/// User selected result from the list
@@ -52,20 +55,17 @@ namespace TQVaultAE.GUI
 			this.InitializeComponent();
 			this.tooltip = new TTLib();
 			this.resultsList = new List<Result>();
-			////this.selectedResult = new Result();
+			this.resultsBindingListView = new BindingListView<Result>(resultsList);
+			this.resultsDataGridView.DataSource = resultsBindingListView;
+
 			this.item.HeaderText = Resources.ResultsItem;
 			this.containerName.HeaderText = Resources.ResultsContainer;
 			this.containerType.HeaderText = Resources.ResultsContainerType;
-			this.sack.HeaderText = Resources.ResultsSack;
 			this.quality.HeaderText = Resources.ResultsQuality;
 
 			this.DrawCustomBorder = true;
 
-			this.FormDesignRatio = 0.0F; //// (float)this.Height / (float)this.Width;
-										 ////this.FormMaximumSize = new Size(this.Width * 2, this.Height * 2);
-										 ////this.FormMinimumSize = new Size(
-										 ////Convert.ToInt32((float)this.Width * 0.4F),
-										 ////Convert.ToInt32((float)this.Height * 0.4F));
+			this.FormDesignRatio = 0.0F;
 			this.OriginalFormSize = this.Size;
 			this.OriginalFormScale = 1.0F;
 			this.LastFormSize = this.Size;
@@ -111,7 +111,7 @@ namespace TQVaultAE.GUI
 		/// </summary>
 		/// <param name="containterType">SackType which we are looking up</param>
 		/// <returns>string containing the sack type</returns>
-		private static string GetContainerTypeString(SackType containterType)
+		public static string GetContainerTypeString(SackType containterType)
 		{
 			switch (containterType)
 			{
@@ -201,7 +201,7 @@ namespace TQVaultAE.GUI
 		/// <returns>String containing the tool tip for the Result.</returns>
 		private string GetToolTip(Result selectedResult)
 		{
-			if (selectedResult == null || selectedResult.Item == null)
+			if (selectedResult == null)
 			{
 				// hide the tooltip
 				this.tooltipText = null;
@@ -255,23 +255,7 @@ namespace TQVaultAE.GUI
 			// Update the dialog text.
 			this.Text = string.Format(CultureInfo.CurrentCulture, Resources.ResultsText, this.resultsList.Count, this.searchString);
 
-			foreach (Result result in this.resultsList)
-			{
-				string text = result.Item.ToString();
-				Color color = result.Item.GetColorTag(text);
-				text = Item.ClipColorTag(text);
-
-				// Add the result to the DataGridView
-				this.resultsDataGridView.Rows.Add(text, result.ItemStyle, result.ContainerName, result.Sack + 1, GetContainerTypeString(result.ContainerType));
-
-				// Change the text color of the item string and style to match the style color.
-				int currentRow = this.resultsDataGridView.Rows.Count - 1;
-				if (currentRow > -1)
-				{
-					this.resultsDataGridView.Rows[currentRow].Cells[0].Style.ForeColor = color;
-					this.resultsDataGridView.Rows[currentRow].Cells[1].Style.ForeColor = color;
-				}
-			}
+			this.resultsBindingListView.Refresh();
 		}
 
 		/// <summary>
@@ -302,60 +286,6 @@ namespace TQVaultAE.GUI
 				// Escape key
 				this.Close();
 			}
-
-			/*if (e.KeyChar == 13)
-            {
-                // Enter key
-                if (this.resultsList.Count == 1)
-                {
-                    this.selectedResult = this.resultsList[0];
-                    this.Close();
-                }
-                else
-                {
-                    int index = this.resultsDataGridView.SelectedRows[0].Index - 1;
-                    if (index > -1 && index < this.resultsDataGridView.Rows.Count)
-                    {
-                        this.selectedResult = this.resultsList[index];
-                        if (this.selectedResult.Item != null)
-                        {
-                            this.Close();
-                        }
-                    }
-                }
-            }*/
-		}
-
-
-		delegate IComparable GetComparableProperty(Result result);
-		private void ResultsDataGridViewSorted(object sender, EventArgs e)
-		{
-			var sortOrder = this.resultsDataGridView.SortOrder == SortOrder.Ascending ? 1 : -1;
-			var sortColumnIndex = this.resultsDataGridView.SortedColumn.Index;
-
-			GetComparableProperty getSortProperty = result =>
-			{
-				switch (sortColumnIndex)
-				{
-					case 0:
-						return result.Item.ToString();
-					case 1:
-						return result.ItemStyle;
-					case 2:
-						return result.ContainerName;
-					case 3:
-						return result.Sack;
-					case 4:
-						return GetContainerTypeString(result.ContainerType);
-					default:
-						return 0;
-				}
-			};
-
-			this.resultsList.Sort(delegate (Result a, Result b)
-			{
-				return sortOrder * getSortProperty(a).CompareTo(getSortProperty(b));
-			});
 		}
 
 		/// <summary>
@@ -371,12 +301,9 @@ namespace TQVaultAE.GUI
 				return;
 			}
 
-			this.selectedResult = (Result)this.resultsList[e.RowIndex];
+			this.selectedResult = ((ObjectView<Result>)this.resultsDataGridView.Rows[e.RowIndex].DataBoundItem).Object;
 
-			if (this.selectedResult.Item != null && this.ResultChanged != null)
-			{
-				this.ResultChanged(this, new ResultChangedEventArgs(this.selectedResult));
-			}
+			this.ResultChanged?.Invoke(this, new ResultChangedEventArgs(this.selectedResult));
 
 			////if (!string.IsNullOrEmpty(this.tooltipText))
 			////{
@@ -410,7 +337,7 @@ namespace TQVaultAE.GUI
 			}
 
 			this.resultsDataGridView.CurrentCell = this.resultsDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-			this.selectedResult = (Result)this.resultsList[e.RowIndex];
+			this.selectedResult = ((ObjectView<Result>)this.resultsDataGridView.Rows[e.RowIndex].DataBoundItem).Object;
 			this.tooltip.ChangeText(this.GetToolTip(this.selectedResult));
 		}
 
@@ -450,6 +377,15 @@ namespace TQVaultAE.GUI
 			this.resultsDataGridView.Size = new Size(
 				Math.Max(this.Padding.Horizontal + 1, this.Width - this.Padding.Horizontal),
 				Math.Max(this.Padding.Vertical + 1, this.Height - this.Padding.Vertical));
+		}
+
+		private void ResultsDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (e.ColumnIndex < 2)
+			{
+				var value = (ObjectView<Result>)this.resultsDataGridView.Rows[e.RowIndex].DataBoundItem;
+				e.CellStyle.ForeColor = value.Object.Color;
+			}
 		}
 	}
 }

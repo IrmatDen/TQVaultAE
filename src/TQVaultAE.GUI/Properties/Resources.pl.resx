@@ -619,9 +619,6 @@ Na pewno chcesz go zastąpić?</value>
   <data name="ResultsQuality" xml:space="preserve">
     <value>Jakość</value>
   </data>
-  <data name="ResultsSack" xml:space="preserve">
-    <value>Worek</value>
-  </data>
   <data name="ResultsText" xml:space="preserve">
     <value>{0} Znaleziono Przedmioty z '{1}'</value>
   </data>

@@ -6,50 +6,56 @@
 namespace TQVaultAE.GUI
 {
 	using TQVaultData;
+	using System;
+	using System.ComponentModel;
+	using System.Drawing;
 
 	/// <summary>
 	/// Class for an individual result in the results list.
 	/// </summary>
 	public class Result
 	{
-		/// <summary>
-		/// Gets or sets the item string
-		/// </summary>
-		////public string ItemName { get; set; }
+		[Browsable(false)]
+		public SackType SackType => sackType;
+		[Browsable(false)]
+		public Color Color => color;
+		[Browsable(false)]
+		public int SackNumber => sackNumber;
+		[Browsable(false)]
+		public string Container => container;
+		[Browsable(false)]
+		public Item Item => item;
 
-		/// <summary>
-		/// Gets or sets the container string
-		/// </summary>
-		public string Container { get; set; }
+		public string ItemName => itemName;
+		public string ItemStyle => itemStyle;
+		public string ContainerName => containerName;
+		public string ContainerType => containerType;
 
-		/// <summary>
-		/// Gets or sets the container name string
-		/// </summary>
-		public string ContainerName { get; set; }
 
-		/// <summary>
-		/// Gets or sets the sack number
-		/// </summary>
-		public int Sack { get; set; }
+		private readonly string container;
+		private readonly string containerName;
+		private readonly int sackNumber;
+		private readonly SackType sackType;
+		private readonly Item item;
 
-		/// <summary>
-		/// Gets or sets the container type
-		/// </summary>
-		public SackType ContainerType { get; set; }
+		private readonly string itemName;
+		private readonly string itemStyle;
+		private readonly string containerType;
+		private readonly Color color;
 
-		/// <summary>
-		/// Gets or sets the item location
-		/// </summary>
-		////public Point Location { get; set; }
+		public Result(string container, string containerName, int sackNumber, SackType sackType, Item item)
+		{
+			this.container = container ?? throw new ArgumentNullException(nameof(container));
+			this.containerName = containerName ?? throw new ArgumentNullException(nameof(containerName));
+			this.sackNumber = sackNumber;
+			this.sackType = sackType;
+			this.item = item ?? throw new ArgumentNullException(nameof(item));
 
-		/// <summary>
-		/// Gets or sets the item style (quality)
-		/// </summary>
-		public string ItemStyle { get; set; }
-
-		/// <summary>
-		/// Gets or sets the Item instance for this result.
-		/// </summary>
-		public Item Item { get; set; }
+			var itemStyle = item.ItemStyle;
+			this.itemName = Item.ClipColorTag(item.ToString());
+			this.itemStyle = MainForm.GetItemStyleString(itemStyle);
+			this.containerType = ResultsDialog.GetContainerTypeString(sackType);
+			this.color = Item.GetColor(itemStyle);
+		}
 	}
 }

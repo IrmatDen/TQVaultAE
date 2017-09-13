@@ -619,9 +619,6 @@ Soll es Überschrieben werden?</value>
   <data name="ResultsQuality" xml:space="preserve">
     <value>Qualität</value>
   </data>
-  <data name="ResultsSack" xml:space="preserve">
-    <value>Sack</value>
-  </data>
   <data name="ResultsText" xml:space="preserve">
     <value>{0} Gegenstände mit '{1}' gefunden</value>
   </data>

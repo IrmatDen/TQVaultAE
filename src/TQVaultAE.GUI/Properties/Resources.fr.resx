@@ -621,9 +621,6 @@ Etes-vous sûr de vouloir écraser son contenu ?</value>
   <data name="ResultsQuality" xml:space="preserve">
     <value>Qualité</value>
   </data>
-  <data name="ResultsSack" xml:space="preserve">
-    <value>Sac</value>
-  </data>
   <data name="ResultsText" xml:space="preserve">
     <value>{0} objets trouvés avec '{1}'</value>
   </data>
