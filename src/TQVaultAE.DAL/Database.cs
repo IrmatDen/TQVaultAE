@@ -487,15 +487,9 @@ namespace TQVaultData
 					record = this.ArzFileMod.GetItem(itemId);
 				}
 
-				// Try the expansion pack database first.
-				if (record == null && this.ArzFileIT != null)
+                // Try in the database (normal case)
+				if (record == null)
 				{
-					record = this.ArzFileIT.GetItem(itemId);
-				}
-
-				if (record == null || this.ArzFileIT == null)
-				{
-					// Try looking in TQ database now
 					record = this.ArzFile.GetItem(itemId);
 				}
 
@@ -602,8 +596,7 @@ namespace TQVaultData
 		/// </summary>
 		/// <remarks>
 		/// Changed by VillageIdiot
-		/// Changed search order so that IT records have precedence of TQ records.
-		/// Add Custom Map database.  Custom Map records have precedence over IT records.
+		/// Add Custom Map database.  Custom Map records have precedence over TQ records.
 		/// </remarks>
 		/// <param name="itemId">Item Id which we are looking up</param>
 		/// <returns>Returns the DBRecord for the item Id</returns>
@@ -619,17 +612,6 @@ namespace TQVaultData
 				{
 					// Custom Map records have highest precedence.
 					return recordMod;
-				}
-			}
-
-            if (this.ArzFileIT != null)
-			{
-				// see if it's in IT ARZ file
-				DBRecordCollection recordIT = this.ArzFileIT.GetItem(itemId);
-				if (recordIT != null)
-				{
-					// IT file takes precedence over TQ.
-					return recordIT;
 				}
 			}
 
@@ -683,16 +665,7 @@ namespace TQVaultData
 					TQDebug.DebugWriteLine("Checking Custom Resources.");
 				}
 
-				if (TQData.IsITInstalled)
-				{
-					rootFolder = Path.Combine(TQData.ImmortalThroneSaveFolder, "CustomMaps");
-				}
-				else
-				{
-					rootFolder = Path.Combine(TQData.TQSaveFolder, "CustomMaps");
-				}
-
-				rootFolder = Path.Combine(Path.Combine(rootFolder, TQData.MapName), "resources");
+				rootFolder = Path.Combine(Path.Combine(Path.Combine(TQData.TQGameSaveFolder, "CustomMaps"), TQData.MapName), "resources");
 
 				arcFile = Path.Combine(rootFolder, Path.ChangeExtension(arcFileBase, ".arc"));
 				arcFileData = this.ReadARCFile(arcFile, resourceId);
@@ -1249,12 +1222,7 @@ namespace TQVaultData
             // For loading custom map text database.
             if (TQData.IsCustom)
 			{
-				string baseFolder = Path.Combine(TQData.ImmortalThroneSaveFolder, "CustomMaps");
-
-				if (!TQData.IsITInstalled)
-				{
-					baseFolder = Path.Combine(TQData.TQSaveFolder, "CustomMaps");
-				}
+				string baseFolder = Path.Combine(TQData.TQGameSaveFolder, "CustomMaps");
 
 				databaseFile = Path.Combine(Path.Combine(Path.Combine(baseFolder, TQData.MapName), "resources"), "text.arc");
 
@@ -1391,7 +1359,7 @@ namespace TQVaultData
 				TQDebug.DebugWriteLine("Database.LoadARZFile()");
 			}
 
-			// from the original TQ folder
+			// from the TQ folder
 			string file = Path.Combine(Path.Combine(TQData.TQPath, "Database"), "database.arz");
 
 			if (TQDebug.DatabaseDebugLevel > 1)
@@ -1403,34 +1371,10 @@ namespace TQVaultData
 			this.ArzFile = new ArzFile(file);
 			this.ArzFile.Read();
 
-			// now Immortal Throne expansion pack
-			this.ArzFileIT = this.ArzFile;
-			/* if (TQData.IsITInstalled)
-			{
-				file = Path.Combine(Path.Combine(TQData.ImmortalThronePath, "Database"), "database.arz");
-
-				if (TQDebug.DatabaseDebugLevel > 1)
-				{
-					TQDebug.DebugWriteLine("Load Immortal Throne database arz file");
-					TQDebug.DebugWriteLine(string.Format(CultureInfo.InvariantCulture, "file = {0}", file));
-				}
-
-				if (File.Exists(file))
-				{
-					this.ArzFileIT = new ArzFile(file);
-					this.ArzFileIT.Read();
-				}
-			} */
-
             // Added to load a custom map database file.
             if (TQData.IsCustom)
 			{
-				string baseFolder = Path.Combine(TQData.ImmortalThroneSaveFolder, "CustomMaps");
-
-				if (!TQData.IsITInstalled)
-				{
-					baseFolder = Path.Combine(TQData.TQSaveFolder, "CustomMaps");
-				}
+				string baseFolder = Path.Combine(TQData.TQGameSaveFolder, "CustomMaps");
 
 				file = Path.Combine(Path.Combine(Path.Combine(baseFolder, TQData.MapName), "database"), string.Concat(TQData.MapName, ".arz"));
 

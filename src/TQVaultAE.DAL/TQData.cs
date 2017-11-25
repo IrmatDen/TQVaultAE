@@ -35,18 +35,21 @@ namespace TQVaultData
 		/// <summary>
 		/// Gets the Immortal Throne Character save folder
 		/// </summary>
-		public static string ImmortalThroneSaveFolder
-		{
-			get
-			{
-				return Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "My Games"), "Titan Quest - Immortal Throne");
-			}
-		}
+		public static string TQGameSaveFolder
+        {
+            get
+            {
+                return Path.Combine(
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "My Games"),
+                    "Titan Quest - Immortal Throne"
+                );
+            }
+        }
 
-		/// <summary>
-		/// Gets the Titan Quest Character save folder.
-		/// </summary>
-		public static string TQSaveFolder
+        /// <summary>
+        /// Gets the Titan Quest Character save folder.
+        /// </summary>
+        public static string TQSaveFolder
 		{
 			get
 			{
@@ -72,69 +75,7 @@ namespace TQVaultData
 		{
 			get
 			{
-				// We are either autodetecting or the path has not been set
-				//
-				// Detection logic for a GOG install of the anniversary edition ~Malgardian
-				if (string.IsNullOrEmpty(titanQuestGamePath))
-				{
-					string[] path = new string[5];
-					path[0] = "SOFTWARE";
-					path[1] = "GOG.com";
-					path[2] = "Games";
-					path[3] = "1196955511";
-					path[4] = "PATH";
-					titanQuestGamePath = ReadRegistryKey(Microsoft.Win32.Registry.LocalMachine, path);
-					//MessageBox.Show(titanQuestGamePath);
-				}
-
-				// Detection logic for a Steam install of the anniversary edition ~Malgardian
-				if (string.IsNullOrEmpty(titanQuestGamePath))
-				{
-					string steamTQPath = "\\SteamApps\\common\\Titan Quest Anniversary Edition";
-
-					string[] registryPath = new string[] { "Software", "Valve", "Steam", "SteamPath" };
-					string steamPath = ReadRegistryKey(Microsoft.Win32.Registry.CurrentUser, registryPath).Replace("/", "\\");
-
-					if (Directory.Exists(steamPath + steamTQPath))
-					{
-						titanQuestGamePath = steamPath + steamTQPath;
-					}
-					else
-					{
-						//further looking for Steam library
-						//read libraryfolders.vdf
-						Regex vdfPathRegex = new Regex("\"\\d+\"\t+\"([^\"]+)\"");  // "2"		"D:\\games\\Steam"
-						string[] libFile = File.ReadAllLines(steamPath + "\\SteamApps\\libraryfolders.vdf");
-
-						foreach (var line in libFile)
-						{
-							Match match = vdfPathRegex.Match(line.Trim());
-							if (match.Success && Directory.Exists(match.Groups[1] + steamTQPath))
-							{
-								titanQuestGamePath = match.Groups[1] + steamTQPath;
-								break;
-							}
-						}
-					}
-				}
-
-				//Disc version detection logic -old
-				if (string.IsNullOrEmpty(titanQuestGamePath))
-				{
-					string[] path = new string[4];
-					path[0] = "SOFTWARE";
-					path[1] = "Iron Lore";
-					path[2] = "Titan Quest";
-					path[3] = "Install Location";
-					titanQuestGamePath = ReadRegistryKey(Microsoft.Win32.Registry.LocalMachine, path);
-				}
-
-				if (string.IsNullOrEmpty(titanQuestGamePath))
-				{
-					throw new InvalidOperationException("Unable to locate Titan Quest installation directory.");
-				}
-
-				return titanQuestGamePath;
+				return ImmortalThronePath;
 			}
 
 			set
@@ -142,11 +83,6 @@ namespace TQVaultData
 				titanQuestGamePath = value;
 			}
 		}
-
-		/// <summary>
-		/// Gets a value indicating whether Immortal Throne has been installed.
-		/// </summary>
-		public static bool IsITInstalled { get; private set; }
 
         /// <summary>
 		/// Gets a value indicating whether Ragnarok DLC has been installed.
@@ -196,7 +132,7 @@ namespace TQVaultData
 					{
 						//further looking for Steam library
 						//read libraryfolders.vdf
-						Regex vdfPathRegex = new Regex("\"\\d+\"\t+\"([^\"]+)\"");  // "2"		"D:\\games\\Steam"
+						Regex vdfPathRegex = new Regex("\"\\d+\"\t+\"([^\"]+)\"");
 						string[] libFile = File.ReadAllLines(steamPath + "\\SteamApps\\libraryfolders.vdf");
 
 						foreach (var line in libFile)
@@ -210,20 +146,6 @@ namespace TQVaultData
 						}
 					}
 				}
-
-				//Disc version detection logic -old
-				if (string.IsNullOrEmpty(immortalThroneGamePath))
-				{
-					string[] path = new string[4];
-					path[0] = "SOFTWARE";
-					path[1] = "Iron Lore";
-					path[2] = "Titan Quest Immortal Throne";
-					path[3] = "Install Location";
-					immortalThroneGamePath = ReadRegistryKey(Microsoft.Win32.Registry.LocalMachine, path);
-				}
-
-                // ImmortalThrone is always installed in AE
-                IsITInstalled = true;
 
                 return immortalThroneGamePath;
 			}
@@ -336,10 +258,10 @@ namespace TQVaultData
 			{
 				if (IsCustom)
 				{
-					return Path.Combine(Path.Combine(Path.Combine(Path.Combine(ImmortalThroneSaveFolder, "SaveData"), "Sys"), MapName), "winsys.dxb");
+					return Path.Combine(Path.Combine(Path.Combine(Path.Combine(TQGameSaveFolder, "SaveData"), "Sys"), MapName), "winsys.dxb");
 				}
 
-				return Path.Combine(Path.Combine(Path.Combine(ImmortalThroneSaveFolder, "SaveData"), "Sys"), "winsys.dxb");
+				return Path.Combine(Path.Combine(Path.Combine(TQGameSaveFolder, "SaveData"), "Sys"), "winsys.dxb");
 			}
 		}
 
@@ -500,13 +422,8 @@ namespace TQVaultData
 				mapSaveFolder = "User";
 			}
 
-			if (isImmortalThrone)
-			{
-				return Path.Combine(Path.Combine(ImmortalThroneSaveFolder, "SaveData"), mapSaveFolder);
-			}
-
-			return Path.Combine(Path.Combine(TQSaveFolder, "SaveData"), mapSaveFolder);
-		}
+            return Path.Combine(Path.Combine(TQGameSaveFolder, "SaveData"), mapSaveFolder);
+        }
 
 		/// <summary>
 		/// Gets the full path to the player character file.
@@ -569,25 +486,15 @@ namespace TQVaultData
 		/// <summary>
 		/// Gets a list of all of the custom maps.
 		/// </summary>
-		/// <param name="isImmortalThrone">Indicates whether or not Immortal Throne is installed.</param>
 		/// <returns>List of custom maps in a string array</returns>
-		public static string[] GetCustomMapList(bool isImmortalThrone)
+		public static string[] GetCustomMapList()
 		{
 			try
 			{
 				// Get all folders in the CustomMaps directory.
-				string saveFolder;
+				string saveFolder = TQGameSaveFolder;
 
-				if (isImmortalThrone)
-				{
-					saveFolder = ImmortalThroneSaveFolder;
-				}
-				else
-				{
-					saveFolder = TQSaveFolder;
-				}
-
-				string[] mapFolders = Directory.GetDirectories(Path.Combine(saveFolder, "CustomMaps"), "*");
+                string[] mapFolders = Directory.GetDirectories(Path.Combine(saveFolder, "CustomMaps"), "*");
 
 				if (mapFolders == null || mapFolders.Length < 1)
 				{

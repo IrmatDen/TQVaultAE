@@ -580,7 +580,8 @@ namespace TQVaultAE.GUI
 		/// </summary>
 		private static void PossiblyStartTQVaultMon()
 		{
-			if (TQData.IsITInstalled)
+            return;
+            /* if (TQData.IsITInstalled)
 			{
 				return; // IT does not need to run TQVaultMon
 			}
@@ -613,7 +614,7 @@ namespace TQVaultAE.GUI
 							RightToLeftOptions);
 					}
 				}
-			}
+			} */
 		}
 
 		/// <summary>
@@ -1081,14 +1082,10 @@ namespace TQVaultAE.GUI
 			{
 				this.loadingComplete = true;
 				this.Enabled = true;
+                this.LoadTransferStash();
 
-				if (TQData.IsITInstalled)
-				{
-					this.LoadTransferStash();
-				}
-
-				// Load last character here if selected
-				if (Settings.Default.LoadLastCharacter)
+                // Load last character here if selected
+                if (Settings.Default.LoadLastCharacter)
 				{
 					int ind = this.characterComboBox.FindStringExact(Settings.Default.LastCharacterName);
 					if (ind != -1)
@@ -1654,7 +1651,7 @@ namespace TQVaultAE.GUI
 				this.lastBag = this.stashPanel.CurrentBag;
 				this.stashPanel.Player = null;
 				this.stashPanel.Stash = null;
-				if (this.stashPanel.CurrentBag != 1 && TQData.IsITInstalled)
+				if (this.stashPanel.CurrentBag != 1)
 				{
 					this.stashPanel.SackPanel.ClearSelectedItems();
 					this.stashPanel.CurrentBag = 1;
@@ -3720,12 +3717,8 @@ namespace TQVaultAE.GUI
 		{
 			this.SearchVaults(predicate, results);
 			this.SearchPlayers(predicate, results);
-
-			if (TQData.IsITInstalled)
-			{
-				this.SearchStashes(predicate, results);
-			}
-		}
+            this.SearchStashes(predicate, results);
+        }
 
 		/// <summary>
 		/// Handler for showing the main form.
