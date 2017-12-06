@@ -82,7 +82,25 @@ namespace TQVaultAE.GUI
 				}
 			} while (toIndex >= 0);
 
+			predicates.Add(GetRequiredLevelPredicate(predicates));
+
 			return new ItemAndPredicate(predicates);
+		}
+
+		private IItemPredicate GetRequiredLevelPredicate(List<IItemPredicate> predicates)
+		{
+			int minLevel, maxLevel;
+
+			if (!Int32.TryParse(minLevelTextBox.Text, out minLevel))
+			{
+				minLevel = 0;
+			}
+			if (!Int32.TryParse(maxLevelTextBox.Text, out maxLevel))
+			{
+				maxLevel = 85;
+			}
+
+			return new ItemLevelRangePredicate(minLevel, maxLevel);
 		}
 
 		private static IItemPredicate GetPredicateFrom(string term, Func<string, IItemPredicate> newPredicate)
@@ -133,6 +151,14 @@ namespace TQVaultAE.GUI
 		private void SearchDialogShown(object sender, EventArgs e)
 		{
 			this.searchTextBox.Focus();
+		}
+
+		private void levelTextBox_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!(Char.IsDigit(e.KeyChar) || e.KeyChar == (char)Keys.Back))
+			{
+				e.Handled = true;
+			}
 		}
 
 		private class ItemTruePredicate : IItemPredicate
