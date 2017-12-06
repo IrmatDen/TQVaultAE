@@ -186,7 +186,6 @@ namespace TQVaultAE.GUI
 			}
 		}
 
-
 		private class ItemOrPredicate : IItemPredicate
 		{
 			private readonly List<IItemPredicate> predicates;
@@ -289,6 +288,27 @@ namespace TQVaultAE.GUI
 			public override string ToString()
 			{
 				return $"Attribute({attribute})";
+			}
+		}
+
+		private class ItemLevelRangePredicate : IItemPredicate
+		{
+			private readonly int minLevel, maxLevel;
+
+			public ItemLevelRangePredicate(int minLevel, int maxLevel)
+			{
+				this.minLevel = minLevel;
+				this.maxLevel = maxLevel;
+			}
+
+			public bool Apply(Item item)
+			{
+				return minLevel <= item.RequiredLevel && item.RequiredLevel <= maxLevel;
+			}
+
+			public override string ToString()
+			{
+				return $"[{minLevel}-{maxLevel}]";
 			}
 		}
 	}

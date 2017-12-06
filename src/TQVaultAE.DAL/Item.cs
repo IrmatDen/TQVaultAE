@@ -187,6 +187,8 @@ namespace TQVaultData
 		/// </summary>
 		private static Random random = InitializeRandom();
 
+		private static int InvalidRequiredLevel = -42;
+
 		/// <summary>
 		/// Binary marker for the beginning of a block
 		/// </summary>
@@ -273,6 +275,11 @@ namespace TQVaultData
 		/// </summary>
 		private float itemScalePercent;
 
+		/// <summary>
+		/// Stores required level once it is read
+		/// </summary>
+		private int requiredLevel;
+
 		#endregion Item Fields
 
 		/// <summary>
@@ -286,6 +293,8 @@ namespace TQVaultData
 			this.bareAttributes = new string[6];  // Hard coded to 6
 			this.itemScalePercent = 1.00F;
 			this.StackSize = 1;
+
+			this.requiredLevel = InvalidRequiredLevel;
 
 			// Make sure the translatable strings have a value.
 			SetDefaultStrings();
@@ -1260,6 +1269,28 @@ namespace TQVaultData
 				}
 
 				return group;
+			}
+		}
+
+		public int RequiredLevel
+		{
+			get
+			{
+				if (this.requiredLevel != InvalidRequiredLevel)
+				{
+					return this.requiredLevel;
+				}
+
+				SortedList<string, Variable> requirements = GetRequirementVariables();
+				int levelReqIndex = requirements.IndexOfKey("LevelRequirement");
+				if (levelReqIndex < 0)
+				{
+					return -1;
+				}
+
+				Variable levelReq = requirements.Values[levelReqIndex];
+				this.requiredLevel = levelReq.GetInt32(0);
+				return this.requiredLevel;
 			}
 		}
 
@@ -3005,7 +3036,7 @@ namespace TQVaultData
 				TQDebug.DebugWriteLine("Exiting Item.GetDBData ()");
 			}
 		}
-
+		
 		#endregion Item Public Methods
 
 		#region Item Private Methods
