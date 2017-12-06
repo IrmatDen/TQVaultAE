@@ -21,6 +21,11 @@ namespace TQVaultAE.GUI
 	using Tooltip;
 	using TQVaultData;
 
+	public interface IItemPredicate
+	{
+		bool Apply(Item item);
+	}
+
 	/// <summary>
 	/// Main Dialog class
 	/// </summary>
@@ -156,6 +161,12 @@ namespace TQVaultAE.GUI
 		private double fadeInterval;
 
 		/// <summary>
+		/// Persistant instance of the search dialog. Allows us to not restore search state since we're
+		/// basically only toggling its visibility state.
+		/// </summary>
+		private SearchDialog searchDialog;
+
+		/// <summary>
 		/// Initializes a new instance of the MainForm class.
 		/// </summary>
 		[PermissionSet(SecurityAction.LinkDemand, Unrestricted = true)]
@@ -262,6 +273,8 @@ namespace TQVaultAE.GUI
 
 			this.splashScreen.Show();
 			this.splashScreen.Update();
+
+			this.searchDialog = new SearchDialog();
 		}
 
 		/// <summary>
@@ -638,169 +651,6 @@ namespace TQVaultAE.GUI
 
 			return tmpList;
 		}
-
-		private interface IItemPredicate
-		{
-			bool Apply(Item item);
-		}
-
-		private class ItemTruePredicate : IItemPredicate
-		{
-			public bool Apply(Item item)
-			{
-				return true;
-			}
-
-			public override string ToString()
-			{
-				return "true";
-			}
-		}
-
-		private class ItemFalsePredicate : IItemPredicate
-		{
-			public bool Apply(Item item)
-			{
-				return false;
-			}
-
-			public override string ToString()
-			{
-				return "false";
-			}
-		}
-
-		private class ItemAndPredicate : IItemPredicate
-		{
-			private readonly List<IItemPredicate> predicates;
-
-			public ItemAndPredicate(params IItemPredicate[] predicates)
-			{
-				this.predicates = predicates.ToList();
-			}
-
-			public ItemAndPredicate(IEnumerable<IItemPredicate> predicates)
-			{
-				this.predicates = predicates.ToList();
-			}
-
-			public bool Apply(Item item)
-			{
-				return predicates.TrueForAll(predicate => predicate.Apply(item));
-			}
-
-			public override string ToString()
-			{
-				return "(" + String.Join(" && ", predicates.ConvertAll(p => p.ToString()).ToArray()) + ")";
-			}
-		}
-
-
-		private class ItemOrPredicate : IItemPredicate
-		{
-			private readonly List<IItemPredicate> predicates;
-
-			public ItemOrPredicate(params IItemPredicate[] predicates)
-			{
-				this.predicates = predicates.ToList();
-			}
-
-			public ItemOrPredicate(IEnumerable<IItemPredicate> predicates)
-			{
-				this.predicates = predicates.ToList();
-			}
-
-			public bool Apply(Item item)
-			{
-				return predicates.Exists(predicate => predicate.Apply(item));
-			}
-
-			public override string ToString()
-			{
-				return "(" + String.Join(" || ", predicates.ConvertAll(p => p.ToString()).ToArray()) + ")";
-			}
-		}
-
-		private class ItemNamePredicate : IItemPredicate
-		{
-			private readonly string name;
-
-			public ItemNamePredicate(string type)
-			{
-				this.name = type;
-			}
-
-			public bool Apply(Item item)
-			{
-				return item.ToString().ToUpperInvariant().Contains(name.ToUpperInvariant());
-			}
-
-			public override string ToString()
-			{
-				return $"Name({name})";
-			}
-		}
-
-		private class ItemTypePredicate : IItemPredicate
-		{
-			private readonly string type;
-
-			public ItemTypePredicate(string type)
-			{
-				this.type = type;
-			}
-
-			public bool Apply(Item item)
-			{
-				return item.ItemClass.ToUpperInvariant().Contains(type.ToUpperInvariant());
-			}
-
-			public override string ToString()
-			{
-				return $"Type({type})";
-			}
-		}
-
-		private class ItemQualityPredicate : IItemPredicate
-		{
-			private readonly string quality;
-
-			public ItemQualityPredicate(string quality)
-			{
-				this.quality = quality;
-			}
-
-			public bool Apply(Item item)
-			{
-				return GetItemStyleString(item.ItemStyle).ToUpperInvariant().Contains(quality.ToUpperInvariant());
-			}
-
-			public override string ToString()
-			{
-				return $"Quality({quality})";
-			}
-		}
-
-		private class ItemAttributePredicate : IItemPredicate
-		{
-			private readonly string attribute;
-
-			public ItemAttributePredicate(string attribute)
-			{
-				this.attribute = attribute;
-			}
-
-			public bool Apply(Item item)
-			{
-				return item.GetAttributes(true).ToUpperInvariant().Contains(attribute.ToUpperInvariant());
-			}
-
-			public override string ToString()
-			{
-				return $"Attribute({attribute})";
-			}
-		}
-
 
 		/// <summary>
 		/// Counts the number of files which LoadAllFiles will load.  Used to set the max value of the progress bar.
@@ -3329,21 +3179,20 @@ namespace TQVaultAE.GUI
 		/// Searches loaded files based on the specified search string.  Internally normalized to UpperInvariant
 		/// </summary>
 		/// <param name="searchString">string that we are searching for</param>
-		private void Search(string searchString)
+		private void Search(IItemPredicate filter)
 		{
-			if (searchString == null || searchString.Trim().Count() == 0)
+			if (filter == null)
 			{
 				return;
 			}
-
-			var filter = GetFilterFrom(searchString);
 			var results = new List<Result>();
 			this.SearchFiles(filter, results);
 
 			if (results.Count < 1)
 			{
+				// TODO searchString?
 				MessageBox.Show(
-					string.Format(CultureInfo.CurrentCulture, Resources.MainFormNoItemsFound, searchString),
+					string.Format(CultureInfo.CurrentCulture, Resources.MainFormNoItemsFound, "" /*searchString*/),
 					Resources.MainFormNoItemsFound2,
 					MessageBoxButtons.OK,
 					MessageBoxIcon.Information,
@@ -3358,75 +3207,12 @@ namespace TQVaultAE.GUI
 			dlg.ResultChanged += new ResultsDialog.EventHandler<ResultChangedEventArgs>(this.SelectResult);
 			dlg.ResultsList.Clear();
 			dlg.ResultsList.AddRange(results);
-			dlg.SearchString = searchString;
+			// TODO: search string for results?
+			//dlg.SearchString = searchString;
 			////dlg.ShowDialog();
 			dlg.Show();
 		}
-
-		private static IItemPredicate GetFilterFrom(string searchString)
-		{
-			var predicates = new List<IItemPredicate>();
-			searchString = searchString.Trim();
-
-			var TOKENS = "@#$".ToCharArray();
-			int fromIndex = 0;
-			int toIndex;
-			do
-			{
-				string term;
-
-				toIndex = searchString.IndexOfAny(TOKENS, fromIndex + 1);
-				if (toIndex < 0)
-				{
-					term = searchString.Substring(fromIndex);
-				}
-				else
-				{
-					term = searchString.Substring(fromIndex, toIndex - fromIndex);
-					fromIndex = toIndex;
-				}
-
-				switch (term[0])
-				{
-					case '@':
-						predicates.Add(GetPredicateFrom(term.Substring(1), it => new ItemTypePredicate(it)));
-						break;
-					case '#':
-						predicates.Add(GetPredicateFrom(term.Substring(1), it => new ItemAttributePredicate(it)));
-						break;
-					case '$':
-						predicates.Add(GetPredicateFrom(term.Substring(1), it => new ItemQualityPredicate(it)));
-						break;
-					default:
-						foreach (var name in term.Split('&'))
-						{
-							predicates.Add(GetPredicateFrom(name, it => new ItemNamePredicate(it)));
-						}
-						break;
-				}
-			} while (toIndex >= 0);
-
-			return new ItemAndPredicate(predicates);
-		}
-
-		private static IItemPredicate GetPredicateFrom(string term, Func<string, IItemPredicate> newPredicate)
-		{
-			var predicates = term.Split('|')
-				.Select(it => it.Trim())
-				.Where(it => it.Count() > 0)
-				.Select(it => newPredicate(it));
-
-			switch (predicates.Count())
-			{
-				case 0:
-					return new ItemTruePredicate();
-				case 1:
-					return predicates.First();
-				default:
-					return new ItemOrPredicate(predicates);
-			}
-		}
-
+		
 		/// <summary>
 		/// Selects the item highlighted in the results list.
 		/// </summary>
@@ -3821,12 +3607,11 @@ namespace TQVaultAE.GUI
 		/// </summary>
 		private void OpenSearchDialog()
 		{
-			SearchDialog searchDialog = new SearchDialog();
 			searchDialog.Scale(new SizeF(Database.DB.Scale, Database.DB.Scale));
 
-			if (searchDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(searchDialog.SearchText))
+			if (searchDialog.ShowDialog() == DialogResult.OK)
 			{
-				this.Search(searchDialog.SearchText);
+				this.Search(searchDialog.GetFilters());
 			}
 		}
 
