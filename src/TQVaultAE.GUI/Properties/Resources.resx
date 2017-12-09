@@ -1149,4 +1149,64 @@ Here is a complex example: 'arctic &amp; of frost @ring $rare | common'</value>
   <data name="ItemRagnarok" xml:space="preserve">
     <value>Ragnarök Item</value>
   </data>
+  <data name="SearchAll1HWeapon" xml:space="preserve">
+    <value>1H weapons</value>
+  </data>
+  <data name="SearchAll2HWeapon" xml:space="preserve">
+    <value>2H weapons</value>
+  </data>
+  <data name="SearchAllArmors" xml:space="preserve">
+    <value>Armors</value>
+  </data>
+  <data name="SearchAllItems" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="SearchAllJewelry" xml:space="preserve">
+    <value>Jewelry</value>
+  </data>
+  <data name="SearchAllWeapons" xml:space="preserve">
+    <value>Weapon</value>
+  </data>
+  <data name="SearchMisc" xml:space="preserve">
+    <value>Misc.</value>
+  </data>
+  <data name="ItemTypeamulet" xml:space="preserve">
+    <value>Amulet</value>
+  </data>
+  <data name="ItemTypeaxe" xml:space="preserve">
+    <value>Axe</value>
+  </data>
+  <data name="ItemTypebow" xml:space="preserve">
+    <value>Bow</value>
+  </data>
+  <data name="ItemTypeforearm" xml:space="preserve">
+    <value>Forearm</value>
+  </data>
+  <data name="ItemTypehead" xml:space="preserve">
+    <value>Head</value>
+  </data>
+  <data name="ItemTypelowerBody" xml:space="preserve">
+    <value>Lower body</value>
+  </data>
+  <data name="ItemTypemace" xml:space="preserve">
+    <value>Mace</value>
+  </data>
+  <data name="ItemTypering" xml:space="preserve">
+    <value>Ring</value>
+  </data>
+  <data name="ItemTypeshield" xml:space="preserve">
+    <value>Shield</value>
+  </data>
+  <data name="ItemTypespear" xml:space="preserve">
+    <value>Spear</value>
+  </data>
+  <data name="ItemTypestaff" xml:space="preserve">
+    <value>Staff</value>
+  </data>
+  <data name="ItemTypesword" xml:space="preserve">
+    <value>Sword</value>
+  </data>
+  <data name="ItemTypeupperBody" xml:space="preserve">
+    <value>Upper body</value>
+  </data>
 </root>

@@ -57,17 +57,23 @@ namespace TQVaultAE.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
+            this.components = new System.ComponentModel.Container();
             TQVaultAE.GUI.ScalingLabel scalingLabel1;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchDialog));
             TQVaultAE.GUI.ScalingLabel reqLevelLinkLabel;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchDialog));
+            TQVaultAE.GUI.ScalingLabel scalingLabel2;
             this.searchLabel = new TQVaultAE.GUI.ScalingLabel();
             this.searchTextBox = new TQVaultAE.GUI.ScalingTextBox();
             this.findButton = new TQVaultAE.GUI.ScalingButton();
             this.cancelButton = new TQVaultAE.GUI.ScalingButton();
             this.minLevelTextBox = new TQVaultAE.GUI.ScalingTextBox();
             this.maxLevelTextBox = new TQVaultAE.GUI.ScalingTextBox();
+            this.itemTypeComboBox = new TQVaultAE.GUI.ScalingComboBox();
+            this.itemTypeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             scalingLabel1 = new TQVaultAE.GUI.ScalingLabel();
             reqLevelLinkLabel = new TQVaultAE.GUI.ScalingLabel();
+            scalingLabel2 = new TQVaultAE.GUI.ScalingLabel();
+            ((System.ComponentModel.ISupportInitialize)(this.itemTypeBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // scalingLabel1
@@ -79,6 +85,16 @@ namespace TQVaultAE.GUI
             scalingLabel1.Size = new System.Drawing.Size(89, 15);
             scalingLabel1.TabIndex = 9;
             scalingLabel1.Text = "Required level:";
+            // 
+            // reqLevelLinkLabel
+            // 
+            reqLevelLinkLabel.AutoSize = true;
+            reqLevelLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            reqLevelLinkLabel.Location = new System.Drawing.Point(171, 222);
+            reqLevelLinkLabel.Name = "reqLevelLinkLabel";
+            reqLevelLinkLabel.Size = new System.Drawing.Size(11, 15);
+            reqLevelLinkLabel.TabIndex = 8;
+            reqLevelLinkLabel.Text = "-";
             // 
             // searchLabel
             // 
@@ -168,15 +184,22 @@ namespace TQVaultAE.GUI
             this.maxLevelTextBox.Text = "85";
             this.maxLevelTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.levelTextBox_KeyPress);
             // 
-            // reqLevelLinkLabel
+            // scalingLabel2
             // 
-            reqLevelLinkLabel.AutoSize = true;
-            reqLevelLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            reqLevelLinkLabel.Location = new System.Drawing.Point(171, 222);
-            reqLevelLinkLabel.Name = "reqLevelLinkLabel";
-            reqLevelLinkLabel.Size = new System.Drawing.Size(11, 15);
-            reqLevelLinkLabel.TabIndex = 8;
-            reqLevelLinkLabel.Text = "-";
+            scalingLabel2.AutoSize = true;
+            scalingLabel2.Location = new System.Drawing.Point(15, 254);
+            scalingLabel2.Name = "scalingLabel2";
+            scalingLabel2.Size = new System.Drawing.Size(36, 15);
+            scalingLabel2.TabIndex = 10;
+            scalingLabel2.Text = "Type:";
+            // 
+            // itemTypeComboBox
+            // 
+            this.itemTypeComboBox.FormattingEnabled = true;
+            this.itemTypeComboBox.Location = new System.Drawing.Point(118, 251);
+            this.itemTypeComboBox.Name = "itemTypeComboBox";
+            this.itemTypeComboBox.Size = new System.Drawing.Size(183, 23);
+            this.itemTypeComboBox.TabIndex = 11;
             // 
             // SearchDialog
             // 
@@ -186,6 +209,8 @@ namespace TQVaultAE.GUI
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(31)))), ((int)(((byte)(21)))));
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(610, 515);
+            this.Controls.Add(this.itemTypeComboBox);
+            this.Controls.Add(scalingLabel2);
             this.Controls.Add(scalingLabel1);
             this.Controls.Add(reqLevelLinkLabel);
             this.Controls.Add(this.maxLevelTextBox);
@@ -217,6 +242,9 @@ namespace TQVaultAE.GUI
             this.Controls.SetChildIndex(this.maxLevelTextBox, 0);
             this.Controls.SetChildIndex(reqLevelLinkLabel, 0);
             this.Controls.SetChildIndex(scalingLabel1, 0);
+            this.Controls.SetChildIndex(scalingLabel2, 0);
+            this.Controls.SetChildIndex(this.itemTypeComboBox, 0);
+            ((System.ComponentModel.ISupportInitialize)(this.itemTypeBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -225,5 +253,7 @@ namespace TQVaultAE.GUI
 		#endregion
 		private ScalingTextBox minLevelTextBox;
 		private ScalingTextBox maxLevelTextBox;
+		private ScalingComboBox itemTypeComboBox;
+		private System.Windows.Forms.BindingSource itemTypeBindingSource;
 	}
 }

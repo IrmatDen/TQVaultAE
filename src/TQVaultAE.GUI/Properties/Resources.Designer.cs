@@ -1027,6 +1027,123 @@ namespace TQVaultAE.GUI.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Amulet.
+        /// </summary>
+        internal static string ItemTypeamulet {
+            get {
+                return ResourceManager.GetString("ItemTypeamulet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Axe.
+        /// </summary>
+        internal static string ItemTypeaxe {
+            get {
+                return ResourceManager.GetString("ItemTypeaxe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Bow.
+        /// </summary>
+        internal static string ItemTypebow {
+            get {
+                return ResourceManager.GetString("ItemTypebow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Forearm.
+        /// </summary>
+        internal static string ItemTypeforearm {
+            get {
+                return ResourceManager.GetString("ItemTypeforearm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Head.
+        /// </summary>
+        internal static string ItemTypehead {
+            get {
+                return ResourceManager.GetString("ItemTypehead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Lower body.
+        /// </summary>
+        internal static string ItemTypelowerBody {
+            get {
+                return ResourceManager.GetString("ItemTypelowerBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Mace.
+        /// </summary>
+        internal static string ItemTypemace {
+            get {
+                return ResourceManager.GetString("ItemTypemace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ring.
+        /// </summary>
+        internal static string ItemTypering {
+            get {
+                return ResourceManager.GetString("ItemTypering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Shield.
+        /// </summary>
+        internal static string ItemTypeshield {
+            get {
+                return ResourceManager.GetString("ItemTypeshield", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Spear.
+        /// </summary>
+        internal static string ItemTypespear {
+            get {
+                return ResourceManager.GetString("ItemTypespear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Staff.
+        /// </summary>
+        internal static string ItemTypestaff {
+            get {
+                return ResourceManager.GetString("ItemTypestaff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Sword.
+        /// </summary>
+        internal static string ItemTypesword {
+            get {
+                return ResourceManager.GetString("ItemTypesword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Upper body.
+        /// </summary>
+        internal static string ItemTypeupperBody {
+            get {
+                return ResourceManager.GetString("ItemTypeupperBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à with.
         /// </summary>
         internal static string ItemWith {
@@ -2231,6 +2348,60 @@ namespace TQVaultAE.GUI.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à 1H weapons.
+        /// </summary>
+        internal static string SearchAll1HWeapon {
+            get {
+                return ResourceManager.GetString("SearchAll1HWeapon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à 2H weapons.
+        /// </summary>
+        internal static string SearchAll2HWeapon {
+            get {
+                return ResourceManager.GetString("SearchAll2HWeapon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Armors.
+        /// </summary>
+        internal static string SearchAllArmors {
+            get {
+                return ResourceManager.GetString("SearchAllArmors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à All.
+        /// </summary>
+        internal static string SearchAllItems {
+            get {
+                return ResourceManager.GetString("SearchAllItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Jewelry.
+        /// </summary>
+        internal static string SearchAllJewelry {
+            get {
+                return ResourceManager.GetString("SearchAllJewelry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Weapon.
+        /// </summary>
+        internal static string SearchAllWeapons {
+            get {
+                return ResourceManager.GetString("SearchAllWeapons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Search for an item.
         /// </summary>
         internal static string SearchDialogCaption {
@@ -2252,6 +2423,15 @@ namespace TQVaultAE.GUI.Properties {
         internal static string SearchDialogText {
             get {
                 return ResourceManager.GetString("SearchDialogText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Misc..
+        /// </summary>
+        internal static string SearchMisc {
+            get {
+                return ResourceManager.GetString("SearchMisc", resourceCulture);
             }
         }
         

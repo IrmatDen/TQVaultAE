@@ -1453,6 +1453,59 @@ namespace TQVaultData
 			return text;
 		}
 
+		/// <summary>
+		/// Returns a list of all types of armors
+		/// </summary>
+		public static List<string> GetArmorTypes()
+		{
+			return new List<string>
+			{
+				GetRequirementEquationPrefix("ARMORPROTECTIVE_HEAD"),
+				GetRequirementEquationPrefix("ARMORPROTECTIVE_FOREARM"),
+				GetRequirementEquationPrefix("ARMORPROTECTIVE_LOWERBODY"),
+				GetRequirementEquationPrefix("ARMORPROTECTIVE_UPPERBODY")
+			};
+		}
+
+		/// <summary>
+		/// Returns a list of all types of 1 handed weapons
+		/// </summary>
+		public static List<string> Get1HWeaponTypes()
+		{
+			return new List<string>
+			{
+				GetRequirementEquationPrefix("WEAPONHUNTING_SPEAR"),
+				GetRequirementEquationPrefix("WEAPONMELEE_AXE"),
+				GetRequirementEquationPrefix("WEAPONMELEE_SWORD"),
+				GetRequirementEquationPrefix("WEAPONMELEE_MACE"),
+				GetRequirementEquationPrefix("WEAPONARMOR_SHIELD"),
+			};
+		}
+
+		/// <summary>
+		/// Returns a list of all types of 2 handed weapons
+		/// </summary>
+		public static List<string> Get2HWeaponTypes()
+		{
+			return new List<string>
+			{
+				GetRequirementEquationPrefix("WEAPONHUNTING_BOW"),
+				GetRequirementEquationPrefix("WEAPONMAGICAL_STAFF")
+			};
+		}
+
+		/// <summary>
+		/// Returns a list of all types of jewelry pieces available in game
+		/// </summary>
+		public static List<string> GetJewelryTypes()
+		{
+			return new List<string>
+			{
+				GetRequirementEquationPrefix("ARMORJEWELRY_AMULET"),
+				GetRequirementEquationPrefix("ARMORJEWELRY_RING")
+			};
+		}
+
 		#endregion Item Public Static Methods
 
 		/// <summary>

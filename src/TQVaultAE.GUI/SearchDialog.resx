@@ -120,6 +120,9 @@
   <metadata name="scalingLabel1.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
+  <metadata name="reqLevelLinkLabel.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
   <data name="searchLabel.Text" xml:space="preserve">
     <value>Search for an item name or type within the loaded files.
 Includes all loaded player character inventories, vaults, player stashes and the transfer stash.
@@ -707,7 +710,10 @@ The terms can also be combined @sword&amp;rare would only search for rare swords
         a2Otf6nzFzJfIuexsn03eDq/Ac0CeWH85/hfRNqFE5kZCvcAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="reqLevelLinkLabel.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="scalingLabel2.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
+  </metadata>
+  <metadata name="itemTypeBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>138, 17</value>
   </metadata>
 </root>

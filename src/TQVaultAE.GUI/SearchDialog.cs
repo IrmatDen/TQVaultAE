@@ -18,6 +18,8 @@ namespace TQVaultAE.GUI
 	/// </summary>
 	public partial class SearchDialog : VaultForm
 	{
+		List<UiItemType> uiItemTypes;
+
 		/// <summary>
 		/// Initializes a new instance of the SearchDialog class.
 		/// </summary>
@@ -31,60 +33,108 @@ namespace TQVaultAE.GUI
 			this.findButton.Text = Resources.MainFormSearchButtonText;
 			this.cancelButton.Text = Resources.GlobalCancel;
 
+			this.InitializeTypeComboBox();
+
 			this.searchTextBox.Focus();
 		}
-		
+
 		public IItemPredicate GetFilters()
 		{
 			var predicates = new List<IItemPredicate>();
 			string searchString = searchTextBox.Text.Trim();
 
-			if (string.IsNullOrEmpty(searchString))
+			if (!string.IsNullOrEmpty(searchString))
 			{
-				return null;
+				var TOKENS = "@#$".ToCharArray();
+				int fromIndex = 0;
+				int toIndex;
+				do
+				{
+					string term;
+
+					toIndex = searchString.IndexOfAny(TOKENS, fromIndex + 1);
+					if (toIndex < 0)
+					{
+						term = searchString.Substring(fromIndex);
+					}
+					else
+					{
+						term = searchString.Substring(fromIndex, toIndex - fromIndex);
+						fromIndex = toIndex;
+					}
+
+					switch (term[0])
+					{
+						case '@':
+							predicates.Add(GetPredicateFrom(term.Substring(1), it => new ItemTypePredicate(it)));
+							break;
+						case '#':
+							predicates.Add(GetPredicateFrom(term.Substring(1), it => new ItemAttributePredicate(it)));
+							break;
+						case '$':
+							predicates.Add(GetPredicateFrom(term.Substring(1), it => new ItemQualityPredicate(it)));
+							break;
+						default:
+							foreach (var name in term.Split('&'))
+							{
+								predicates.Add(GetPredicateFrom(name, it => new ItemNamePredicate(it)));
+							}
+							break;
+					}
+				} while (toIndex >= 0);
+			}
+			else
+			{
+				predicates.Add(GetRequiredLevelPredicate(predicates));
+				predicates.Add(new ItemTypeProxyPredicate(((UiItemType)itemTypeComboBox.SelectedItem).predicate));
 			}
 
-			var TOKENS = "@#$".ToCharArray();
-			int fromIndex = 0;
-			int toIndex;
-			do
-			{
-				string term;
-
-				toIndex = searchString.IndexOfAny(TOKENS, fromIndex + 1);
-				if (toIndex < 0)
-				{
-					term = searchString.Substring(fromIndex);
-				}
-				else
-				{
-					term = searchString.Substring(fromIndex, toIndex - fromIndex);
-					fromIndex = toIndex;
-				}
-
-				switch (term[0])
-				{
-					case '@':
-						predicates.Add(GetPredicateFrom(term.Substring(1), it => new ItemTypePredicate(it)));
-						break;
-					case '#':
-						predicates.Add(GetPredicateFrom(term.Substring(1), it => new ItemAttributePredicate(it)));
-						break;
-					case '$':
-						predicates.Add(GetPredicateFrom(term.Substring(1), it => new ItemQualityPredicate(it)));
-						break;
-					default:
-						foreach (var name in term.Split('&'))
-						{
-							predicates.Add(GetPredicateFrom(name, it => new ItemNamePredicate(it)));
-						}
-						break;
-				}
-			} while (toIndex >= 0);
-
-			predicates.Add(GetRequiredLevelPredicate(predicates));
-
 			return new ItemAndPredicate(predicates);
+		}
+
+		#region Private methods
+
+		private void InitializeTypeComboBox()
+		{
+			Func<string, UiItemType> uiItemFromRealType = type => {
+				string label = Resources.ResourceManager.GetString("ItemType" + type);
+				if (string.IsNullOrEmpty(label))
+				{
+					label = type;
+				}
+				return new UiItemType("-- " + label, i => i.ItemClass.ToUpperInvariant().Contains(type.ToUpperInvariant()));
+			};
+
+			uiItemTypes = new List<UiItemType>();
+			uiItemTypes.Add(new UiItemType(Resources.SearchAllItems, _ => true ));
+			uiItemTypes.Add(new UiItemType(Resources.SearchAllWeapons, i => i.IsWeapon));
+			uiItemTypes.Add(new UiItemType("- " + Resources.SearchAll1HWeapon, i => i.IsWeapon && !i.Is2HWeapon));
+			Item.Get1HWeaponTypes().ForEach(type => uiItemTypes.Add(uiItemFromRealType(type)));
+
+			uiItemTypes.Add(new UiItemType("- " + Resources.SearchAll2HWeapon, i =>  i.Is2HWeapon));
+			Item.Get2HWeaponTypes().ForEach(type => uiItemTypes.Add(uiItemFromRealType(type)));
+
+			uiItemTypes.Add(new UiItemType(Resources.SearchAllArmors, i => i.IsArmor));
+			Item.GetArmorTypes().ForEach(type => uiItemTypes.Add(uiItemFromRealType(type)));
+
+			uiItemTypes.Add(new UiItemType(Resources.SearchAllJewelry, i => i.IsAmulet || i.IsRing));
+			Item.GetJewelryTypes().ForEach(type => uiItemTypes.Add(uiItemFromRealType(type)));
+
+			uiItemTypes.Add(new UiItemType(Resources.ItemStyleArtifact, i => i.IsArtifact));
+			
+			uiItemTypes.Add(new UiItemType(Resources.SearchMisc, i => i.IsFormulae || i.IsParchment || i.IsQuestItem || i.IsRelicComplete || i.IsScroll || i.IsPotion));
+			uiItemTypes.Add(new UiItemType("- " + Resources.ItemStyleFormulae, i => i.IsFormulae));
+			uiItemTypes.Add(new UiItemType("- " + Resources.ItemStyleParchment, i => i.IsParchment));
+			uiItemTypes.Add(new UiItemType("- " + Resources.ItemStyleQuest, i => i.IsQuestItem));
+			uiItemTypes.Add(new UiItemType("- " + Resources.ItemStyleRelic, i => i.IsRelicComplete));
+			uiItemTypes.Add(new UiItemType("- " + Resources.ItemStyleScroll, i => i.IsScroll));
+			uiItemTypes.Add(new UiItemType("- " + Resources.ItemStylePotion, i => i.IsPotion));
+
+			itemTypeBindingSource.DataSource = uiItemTypes;
+			itemTypeComboBox.DataSource = itemTypeBindingSource;
+			itemTypeComboBox.DisplayMember = "HumanName";
+
+			itemTypeComboBox.SelectedItem = uiItemTypes[0];
 		}
 
 		private IItemPredicate GetRequiredLevelPredicate(List<IItemPredicate> predicates)
@@ -160,6 +210,12 @@ namespace TQVaultAE.GUI
 				e.Handled = true;
 			}
 		}
+
+		#endregion
+
+		#region Private types
+
+		#region Item predicates
 
 		private class ItemTruePredicate : IItemPredicate
 		{
@@ -277,6 +333,13 @@ namespace TQVaultAE.GUI
 			}
 		}
 
+		private class ItemTypeProxyPredicate : IItemPredicate
+		{
+			private readonly Func<Item, bool> p;
+			public ItemTypeProxyPredicate(Func<Item, bool> realPredicate) { p = realPredicate; }
+			public bool Apply(Item item) => p(item);
+		}
+
 		private class ItemQualityPredicate : IItemPredicate
 		{
 			private readonly string quality;
@@ -337,5 +400,17 @@ namespace TQVaultAE.GUI
 				return $"[{minLevel}-{maxLevel}]";
 			}
 		}
+
+		#endregion
+
+		#endregion
+	}
+
+	public class UiItemType
+	{
+		public UiItemType(string name, Func<Item, bool> pred) { HumanName = name; predicate = pred; }
+
+		public string HumanName { get; set; }
+		public Func<Item, bool> predicate;
 	}
 }
